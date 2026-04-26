@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>剪月裁云·智能赋形咏柳篇</title>
+    <style>
+        /* 网页整体样式设计 */
+        body { font-family: 'Microsoft YaHei', sans-serif; background-color: #f4f4f9; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        h1 { color: #4E342E; text-align: center; margin-bottom: 5px; }
+        .subtitle { color: #795548; font-size: 14px; margin-bottom: 20px; }
+        .container { display: flex; flex-wrap: wrap; gap: 20px; width: 100%; max-width: 1200px; justify-content: center; }
+        
+        /* 左右两大板块的样式 */
+        .section { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); flex: 1; min-width: 350px; display: flex; flex-direction: column; }
+        h2 { border-bottom: 2px solid #8D6E63; padding-bottom: 10px; color: #3E2723; margin-top: 0; }
+        
+        /* 视频样式 */
+        video { width: 100%; border-radius: 8px; background-color: #000; outline: none; }
+        
+        /* 聊天窗口样式 */
+        .chat-box { flex: 1; min-height: 400px; max-height: 500px; overflow-y: auto; border: 1px solid #EFEBE9; padding: 15px; margin-bottom: 15px; border-radius: 8px; background: #FAFAFA; }
+        .message { margin-bottom: 15px; line-height: 1.6; padding: 10px 14px; border-radius: 8px; max-width: 85%; font-size: 15px; }
+        .user-msg { background-color: #E8F5E9; color: #2E7D32; align-self: flex-end; margin-left: auto; border: 1px solid #C8E6C9; }
+        .ai-msg { background-color: #FFF3E0; color: #E65100; align-self: flex-start; border: 1px solid #FFE0B2; }
+        
+        /* 输入框样式 */
+        .input-area { display: flex; gap: 10px; }
+        input[type="text"] { flex: 1; padding: 12px; border: 1px solid #BCAAA4; border-radius: 6px; font-size: 15px; outline: none; }
+        input[type="text"]:focus { border-color: #795548; }
+        button { padding: 12px 24px; background-color: #795548; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 15px; font-weight: bold; transition: background 0.3s; }
+        button:hover { background-color: #5D4037; }
+    </style>
+</head>
+<body>
+
+    <h1>剪月裁云·智能赋形咏柳篇</h1>
+    <div class="subtitle">微课与模拟 AI 辅助教学</div>
+    
+    <div class="container">
+        <div class="section">
+            <h2>📺 微课讲解：《咏柳》赏析</h2>
+            <video controls>
+                <source src="video.mp4" type="video/mp4">
+                您的浏览器不支持视频播放，请检查视频文件名是否为 video.mp4。
+            </video>
+            <p style="color: #666; font-size: 14px; margin-top: 15px; line-height: 1.5;">
+                【操作指南】点击播放按钮观看微课。如果在学习过程中遇到不懂的字词或意境，可以在右侧向助教提问。
+            </p >
+        </div>
+
+        <div class="section">
+            <h2>🤖 助教答疑 (咏柳专版)</h2>
+            <div class="chat-box" id="chatBox">
+                <div class="message ai-msg"><b>智能助教:</b> 你好，同学！我是《咏柳》微课的专属助教。关于这首诗的作者、字词解释（如“碧玉”、“剪刀”）、修辞手法或全诗意境，你都可以直接问我。</div>
+            </div>
+            <div class="input-area">
+                <input type="text" id="userInput" placeholder="例如：春风为什么像剪刀？" onkeypress="handleEnter(event)">
+                <button onclick="sendMessage()">发送</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 监听回车键发送
+        function handleEnter(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        }
+
+        // 核心功能：发送消息并获取回复
+        function sendMessage() {
+            var inputField = document.getElementById("userInput");
+            var message = inputField.value.trim();
+            if(message === "") return;
+
+            var chatBox = document.getElementById("chatBox");
+            
+            // 1. 显示用户输入
+            chatBox.innerHTML += '<div class="message user-msg"><b>你:</b> ' + message + '</div>';
+            inputField.value = "";
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // 2. 模拟思考延迟
+            setTimeout(function() {
+                var reply = generateResponse(message);
+                chatBox.innerHTML += '<div class="message ai-msg"><b>智能助教:</b> ' + reply + '</div>';
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 600); // 0.6秒后回复，显得灵敏又不失真实感
+        }
+
+        // 知识库：纯前端的“本地规则引擎”
+        function generateResponse(text) {
+            // 将输入转为小写，方便匹配
+            var query = text.toLowerCase();
+
+            if (query.includes("作者") || query.includes("贺知章") || query.includes("谁写")) {
+                return "《咏柳》是盛唐诗人贺知章的作品。他写这首诗时，借柳树赞美了春天的勃勃生机。";
+            } 
+            else if (query.includes("剪刀") || query.includes("春风")) {
+                return "这是全诗最精妙的比喻！“二月春风似剪刀”，诗人把无形的春风比作有形的剪刀，生动地写出了春风的灵动，仿佛是它裁剪出了满树的翠绿。";
+            } 
+            else if (query.includes("碧玉") || query.includes("第一句")) {
+                return "“碧玉”在这里既是指代嫩绿色的柳叶，也是运用了拟人手法，将柳树比作一位经过精心打扮（妆成）的年轻女子，展现出一种亭亭玉立的美感。";
+            } 
+            else if (query.includes("丝绦") || query.includes("万条") || query.includes("第二句")) {
+                return "“丝绦”本意是丝编的带子。在这里，诗人用它来比喻柳枝，极其传神地描绘了千万条柳枝随风摇曳时那种柔软、轻盈的姿态。";
+            } 
+            else if (query.includes("不知") || query.includes("细叶") || query.includes("第三句")) {
+                return "“不知细叶谁裁出”是一个巧妙的设问。诗人故意发问：这满树细嫩的柳叶到底是谁裁剪出来的呢？这就自然引出了下一句关于“春风”的绝妙回答。";
+            }
+            else if (query.includes("主题") || query.includes("中心思想") || query.includes("意思") || query.includes("表达了")) {
+                return "这首诗表面上是在咏唱柳树，实际上是通过赞美柳树来歌颂春天的无限创造力和大自然的生机盎然，表达了诗人对春天的无限热爱。";
+            }
+            else if (query.includes("背诵") || query.includes("全诗")) {
+                return "《咏柳》· 贺知章<br>碧玉妆成一树高，万条垂下绿丝绦。<br>不知细叶谁裁出，二月春风似剪刀。";
+            }
+            else {
+                return "这个问题很有趣。作为《咏柳》的专属助教，我的知识库目前聚焦于这首诗的字词释义、修辞手法和意境赏析。你可以尝试问我关于诗中“碧玉”、“丝绦”或“剪刀”的具体含义。";
+            }
+        }
+    </script>
+
+</body>
+</html>
