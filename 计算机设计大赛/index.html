@@ -2,33 +2,160 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>剪月裁云·智能赋形咏柳篇</title>
     <style>
-        /* 网页整体样式设计 */
-        body { font-family: 'Microsoft YaHei', sans-serif; background-color: #f4f4f9; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        h1 { color: #4E342E; text-align: center; margin-bottom: 5px; }
-        .subtitle { color: #795548; font-size: 14px; margin-bottom: 20px; }
-        .container { display: flex; flex-wrap: wrap; gap: 20px; width: 100%; max-width: 1200px; justify-content: center; }
+        /* --- 网页整体背景与新中式质感 --- */
+        body { 
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif; 
+            /* 模拟宣纸与水墨环境的渐变背景，如果你有柳枝背景图，可在此处加上 background-image */
+            background: linear-gradient(135deg, #f2efe8 0%, #e8e2d2 100%);
+            margin: 0; 
+            padding: 30px 20px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            color: #3E2723;
+            min-height: 100vh;
+        }
         
-        /* 左右两大板块的样式 */
-        .section { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); flex: 1; min-width: 350px; display: flex; flex-direction: column; }
-        h2 { border-bottom: 2px solid #8D6E63; padding-bottom: 10px; color: #3E2723; margin-top: 0; }
+        h1 { color: #4E342E; text-align: center; margin-bottom: 5px; font-weight: bold; letter-spacing: 2px;}
+        .subtitle { color: #8D6E63; font-size: 14px; margin-bottom: 30px; letter-spacing: 1px;}
         
-        /* 视频样式 */
-        video { width: 100%; border-radius: 8px; background-color: #000; outline: none; }
+        /* --- 左右双列响应式布局 --- */
+        .container { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; /* 电脑端左右平分 */
+            gap: 25px; 
+            width: 100%; 
+            max-width: 1100px; 
+            align-items: start;
+        }
         
-        /* 聊天窗口样式 */
-        .chat-box { flex: 1; min-height: 400px; max-height: 500px; overflow-y: auto; border: 1px solid #EFEBE9; padding: 15px; margin-bottom: 15px; border-radius: 8px; background: #FAFAFA; }
-        .message { margin-bottom: 15px; line-height: 1.6; padding: 10px 14px; border-radius: 8px; max-width: 85%; font-size: 15px; }
-        .user-msg { background-color: #E8F5E9; color: #2E7D32; align-self: flex-end; margin-left: auto; border: 1px solid #C8E6C9; }
-        .ai-msg { background-color: #FFF3E0; color: #E65100; align-self: flex-start; border: 1px solid #FFE0B2; }
+        /* 手机端自动变为上下堆叠 */
+        @media (max-width: 800px) {
+            .container { grid-template-columns: 1fr; }
+        }
+
+        .left-col, .right-col {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
         
-        /* 输入框样式 */
+        /* --- 核心：Glassmorphism (毛玻璃) 卡片样式 --- */
+        .section { 
+            /* 半透明暖白底色 */
+            background: rgba(255, 252, 245, 0.65); 
+            /* 背景模糊效果 */
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px); /* 兼容 Safari */
+            /* 边缘高光，增强玻璃立体感 */
+            border: 1px solid rgba(255, 255, 255, 0.8); 
+            border-radius: 16px; 
+            box-shadow: 0 10px 30px rgba(93, 64, 55, 0.08); 
+            padding: 25px; 
+            display: flex; 
+            flex-direction: column; 
+        }
+        
+        h2 { 
+            border-bottom: 1px dashed #BCAAA4; 
+            padding-bottom: 12px; 
+            color: #4E342E; 
+            margin-top: 0; 
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* --- 视频区域样式 --- */
+        video { 
+            width: 100%; 
+            border-radius: 10px; 
+            background-color: #000; 
+            outline: none; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        /* --- 聊天窗口新中式配色 --- */
+        .chat-box { 
+            flex: 1; 
+            min-height: 250px; 
+            max-height: 350px; 
+            overflow-y: auto; 
+            /* 聊天框内部也做了一点半透明效果 */
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(215, 204, 200, 0.5); 
+            padding: 15px; 
+            margin-bottom: 15px; 
+            border-radius: 12px; 
+        }
+        
+        /* 自定义滚动条使其更美观 */
+        .chat-box::-webkit-scrollbar { width: 6px; }
+        .chat-box::-webkit-scrollbar-thumb { background: #D7CCC8; border-radius: 3px; }
+
+        .message { margin-bottom: 15px; line-height: 1.6; padding: 12px 16px; border-radius: 12px; max-width: 85%; font-size: 15px; }
+        .user-msg { 
+            background-color: rgba(220, 237, 200, 0.8); 
+            color: #33691E; 
+            align-self: flex-end; 
+            margin-left: auto; 
+            border: 1px solid rgba(197, 225, 165, 0.5); 
+            border-bottom-right-radius: 4px;
+        }
+        .ai-msg { 
+            background-color: rgba(255, 236, 179, 0.7); 
+            color: #E65100; 
+            align-self: flex-start; 
+            border: 1px solid rgba(255, 224, 130, 0.5); 
+            border-top-left-radius: 4px;
+        }
+        
+        /* --- 交互组件样式 --- */
         .input-area { display: flex; gap: 10px; }
-        input[type="text"] { flex: 1; padding: 12px; border: 1px solid #BCAAA4; border-radius: 6px; font-size: 15px; outline: none; }
-        input[type="text"]:focus { border-color: #795548; }
-        button { padding: 12px 24px; background-color: #795548; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 15px; font-weight: bold; transition: background 0.3s; }
-        button:hover { background-color: #5D4037; }
+        input[type="text"] { 
+            flex: 1; 
+            padding: 12px; 
+            border: 1px solid #D7CCC8; 
+            border-radius: 8px; 
+            font-size: 14px; 
+            outline: none; 
+            background: rgba(255, 255, 255, 0.7);
+            transition: all 0.3s;
+        }
+        input[type="text"]:focus { border-color: #8D6E63; background: rgba(255, 255, 255, 1); box-shadow: 0 0 0 2px rgba(141, 110, 99, 0.1); }
+        button { 
+            padding: 12px 24px; 
+            background-color: #795548; 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 15px; 
+            font-weight: bold; 
+            letter-spacing: 1px;
+            transition: all 0.3s; 
+        }
+        button:hover { background-color: #5D4037; transform: translateY(-1px); box-shadow: 0 4px 8px rgba(93, 64, 55, 0.2); }
+
+        /* --- 文本输入域 (用于挑战模块) --- */
+        textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #D7CCC8;
+            background: rgba(255, 255, 255, 0.6);
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.3s;
+        }
+        textarea:focus { border-color: #8D6E63; background: #fff; }
     </style>
 </head>
 <body>
@@ -37,25 +164,54 @@
     <div class="subtitle">微课与模拟 AI 辅助教学</div>
     
     <div class="container">
-        <div class="section">
-            <h2>📺 微课讲解：《咏柳》赏析</h2>
-            <video controls>
-                <source src="video.mp4" type="video/mp4">
-                您的浏览器不支持视频播放，请检查视频文件名是否为 video.mp4。
-            </video>
-            <p style="color: #666; font-size: 14px; margin-top: 15px; line-height: 1.5;">
-                【操作指南】点击播放按钮观看微课。如果在学习过程中遇到不懂的字词或意境，可以在右侧向助教提问。
-            </p >
+        <!-- 左列：视频模块 -->
+        <div class="left-col">
+            <div class="section">
+                <h2>📺 微课讲解：《咏柳》赏析</h2>
+                <video controls>
+                    <source src="video.mp4" type="video/mp4">
+                    您的浏览器不支持视频播放，请检查视频文件名是否为 video.mp4。
+                </video>
+                <p style="color: #6D4C41; font-size: 13px; margin-top: 18px; line-height: 1.6; background: rgba(255,255,255,0.4); padding: 10px; border-radius: 8px;">
+                    【操作指南】点击播放按钮观看微课。如果在学习过程中遇到不懂的字词或意境，可以在右侧向助教提问。
+                </p >
+            </div>
         </div>
 
-        <div class="section">
-            <h2>🤖 助教答疑 (咏柳专版)</h2>
-            <div class="chat-box" id="chatBox">
-                <div class="message ai-msg"><b>智能助教:</b> 你好，同学！我是《咏柳》微课的专属助教。关于这首诗的作者、字词解释（如“碧玉”、“剪刀”）、修辞手法或全诗意境，你都可以直接问我。</div>
+        <!-- 右列：AI答疑、阅读、挑战 -->
+        <div class="right-col">
+            <!-- AI 答疑模块 -->
+            <div class="section">
+                <h2>🤖 助教答疑 (咏柳专版)</h2>
+                <div class="chat-box" id="chatBox">
+                    <div class="message ai-msg"><b>智能助教:</b> 你好，同学！我是《咏柳》微课的专属助教。关于这首诗的作者、字词解释（如“碧玉”、“剪刀”）、修辞手法或全诗意境，你都可以直接问我。</div>
+                </div>
+                <div class="input-area">
+                    <input type="text" id="userInput" placeholder="例如：春风为什么像剪刀？" onkeypress="handleEnter(event)">
+                    <button onclick="sendMessage()">发送</button>
+                </div>
             </div>
-            <div class="input-area">
-                <input type="text" id="userInput" placeholder="例如：春风为什么像剪刀？" onkeypress="handleEnter(event)">
-                <button onclick="sendMessage()">发送</button>
+
+            <!-- 扩展阅读模块 -->
+            <div class="section">
+                <h2>📖 扩展阅读</h2>
+                <div style="text-align: center; line-height: 2.2; color: #4E342E; padding: 10px 0;">
+                    <h3 style="margin: 0 0 5px 0; font-size: 20px;">《咏柳》</h3>
+                    <span style="font-size: 13px; color: #8D6E63;">唐 · 贺知章</span><br>
+                    <span style="font-size: 16px;">
+                        碧玉妆成一树高，万条垂下绿丝绦。<br>
+                        不知细叶谁裁出，二月春风似剪刀。
+                    </span>
+                </div>
+            </div>
+
+            <!-- 诗意小挑战模块 -->
+            <div class="section">
+                <h2>✍️ 诗意小挑战</h2>
+                <p style="font-size: 14px; color: #5D4037; margin-top: 0; margin-bottom: 12px;">
+                    尝试用这几个词（<strong>春风、新燕、绿芽</strong>）写一句关于春天的诗。
+                </p >
+                <textarea placeholder="写下你心中的春天..."></textarea>
             </div>
         </div>
     </div>
@@ -86,12 +242,11 @@
                 var reply = generateResponse(message);
                 chatBox.innerHTML += '<div class="message ai-msg"><b>智能助教:</b> ' + reply + '</div>';
                 chatBox.scrollTop = chatBox.scrollHeight;
-            }, 600); // 0.6秒后回复，显得灵敏又不失真实感
+            }, 600); 
         }
 
         // 知识库：纯前端的“本地规则引擎”
         function generateResponse(text) {
-            // 将输入转为小写，方便匹配
             var query = text.toLowerCase();
 
             if (query.includes("作者") || query.includes("贺知章") || query.includes("谁写")) {
